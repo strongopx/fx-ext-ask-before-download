@@ -215,8 +215,17 @@ function isLargeOctetStream(contentType, fileSize){
     }
 }
 
+function isOnCellular() {
+    var connection = navigator.connection || navigator.mozConnection;
+    return connection && connection.type === 'cellular';
+}
+
 function filterRequest(request) {
     //log("filterRequest");
+    if (!isOnCellular()) {
+        return {};
+    }
+
     /* Maybe only process 200 and 206 is enough */
     if (!(request.statusCode >= 200 && request.statusCode < 300)) {
         return {};
